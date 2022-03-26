@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+
+function getLibrary(provider: any, connector: any) {
+  // depend on web3 or ethers
+  const library = new Web3Provider(provider);
+  return library;
+}
+const Web3ProviderNetwork = createWeb3ReactRoot("NETWORK");
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ProviderNetwork getLibrary={getLibrary}>
+        <App></App>
+      </Web3ProviderNetwork>
+    </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
