@@ -54,7 +54,7 @@ function App() {
   const [dataPopup, setDataPopup] = useState({});
   const [loadingScreen, setLoading] = useState(false);
   const [dataSubGraph, setDataSubGraph] = useState([]);
-  const { account, activate, library } = useWeb3React();
+  const { account, activate, deactivate, library } = useWeb3React();
 
   const DATA_SUBGRAPH = gql`
   query GetDeposit {
@@ -76,6 +76,11 @@ function App() {
   useEffect(() => {
     checkConnect();
   }, [account]);
+
+  const disconnect = () => {
+    localStorage.removeItem('connectedBy');
+    deactivate();
+  }
 
   const connectMetamask = () => {
     localStorage.setItem("connectedBy", METAMASK);
@@ -332,6 +337,7 @@ function App() {
             <Spinner></Spinner>
           ) : (
             <div className="wrapper">
+              <button className="custom-button disconnect" onClick={disconnect}>Disconnect</button>
               <div className="information-box">
                 <p>Wallet Address: {account}</p>
                 <p>Balance: {balance} WETH</p>
